@@ -6,8 +6,6 @@ from django.contrib import admin
 from core.views import get_product
 
 router = routers.DefaultRouter()
-# router.register(r'users', views.UserViewSet)
-# router.register(r'groups', views.GroupViewSet)
 router.register(r'supplier', views.SupplierViewSet)
 router.register(r'category', views.CategoryViewSet)
 router.register(r'product', views.ProductViewSet)
