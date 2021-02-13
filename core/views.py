@@ -47,7 +47,7 @@ def get_product(request):
 def search_product(request):
     name = request.GET.get('query')
 
-    s = ProductDocument.search().query("match", name='Dell')
+    s = ProductDocument.search().query("match", name=name)
     qs = s.to_queryset()
 
     if name is not None:

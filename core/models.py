@@ -54,15 +54,8 @@ class Response():
         self.message = message
 
     def get_obj(self):
-        # return JsonResponse({
-        #     'status_code': self.status_code,
-        #     'data': self.data,
-        #     'message': self.message,
-        # })
-        response = JsonResponse({
+        return JsonResponse({
             'status_code': self.status_code,
             'data': self.data,
             'message': self.message,
         })
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
