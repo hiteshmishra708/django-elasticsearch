@@ -2,4 +2,5 @@ Django==2.1.5
 djangorestframework==3.8.2
 elasticsearch==5.5.1
 elasticsearch-dsl==5.4.0
-drf_elasticsearch_dsl
+django_elasticsearch_dsl
+urllib3==1.25.10

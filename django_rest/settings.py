@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'drf_elasticsearch_dsl.apps.DrfElasticsearchDsl',
     'rest_framework',
+    'django_elasticsearch_dsl',
     'core',
 ]
 
@@ -51,9 +51,15 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-DRF_SERIALIZER_ELASTICSERACH_SETTTINGS = {
-    'elasticsearch_hosts': ['localhost']
+ELASTICSEARCH_DSL={
+    'default': {
+        'hosts': 'localhost:9200'
+    },
 }
+
+# DRF_SERIALIZER_ELASTICSERACH_SETTTINGS = {
+#     'elasticsearch_hosts': ['localhost']
+# }
 
 ROOT_URLCONF = 'django_rest.urls'
 
