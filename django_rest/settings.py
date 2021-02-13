@@ -25,7 +25,7 @@ SECRET_KEY = 'r=fk9!gc=jl-q4e62h17=(%v!h5=%qbgd9h)&mh680(hg-i$cx'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -56,10 +56,6 @@ ELASTICSEARCH_DSL={
         'hosts': 'localhost:9200'
     },
 }
-
-# DRF_SERIALIZER_ELASTICSERACH_SETTTINGS = {
-#     'elasticsearch_hosts': ['localhost']
-# }
 
 ROOT_URLCONF = 'django_rest.urls'
 
@@ -97,11 +93,11 @@ DATABASES = {
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'django_rest',
-#         'USER': 'django_rest',
-#         'PASSWORD': '',
+#         'NAME': 'es',
+#         'USER': 'hitesh',
+#         'PASSWORD': 'HitesH',
 #         'HOST': 'localhost',
-#         'PORT': '',
+#         'PORT': '5432',
 #     }
 # }
 

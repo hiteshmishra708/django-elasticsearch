@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.http import JsonResponse
 
 class Supplier(models.Model):
     name = models.CharField(max_length=30)
@@ -45,3 +46,16 @@ class Product(models.Model):
             'name': self.name,
             'desc': self.desc,
         }
+
+class Response():
+    def __init__(self, data, status_code=200, message=None):
+        self.data = data
+        self.status_code = status_code
+        self.message = message
+
+    def get_obj(self):
+        return JsonResponse({
+            'status_code': self.status_code,
+            'data': self.data,
+            'message': self.message
+        })

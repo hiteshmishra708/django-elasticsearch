@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from .serializers import SupplierSerializer, CategorySerializer, ProductSerializer 
-from .models import Supplier, Category, Product
+from .models import Supplier, Category, Product, Response
 from django.http import JsonResponse
 from .documents import ProductDocument, SupplierDocument, CategoryDocument
-
+from rest_framework.permissions import AllowAny
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
 
 class SupplierViewSet(viewsets.ModelViewSet):
     """
@@ -29,39 +31,31 @@ class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = Product
 
+@csrf_exempt
 def get_product(request):
     name = request.GET.get('name')
 
     if name is not None:
-        return JsonResponse({
-            'code': 200,
-            'message': 'success',
-            'data': [obj.get_obj() for obj in Product.objects.filter(name__contains=name)]
-        })
+        return Response([obj.get_obj() for obj in Product.objects.filter(name__contains=name)]).get_obj()
     else:
         return JsonResponse({
             'code': 400,
             'message': 'Search query invalid'
         })
 
+@csrf_exempt
 def search_product(request):
     name = request.GET.get('query')
 
-    s = ProductDocument.search().query("match", name=name)
+    s = ProductDocument.search().query("match", name='Dell')
     qs = s.to_queryset()
 
     if name is not None:
-        return JsonResponse({
-            'code': 200,
-            'message': 'success',
-            'data': [obj.get_obj() for obj in qs]
-        })
+        return Response([obj.get_obj() for obj in qs]).get_obj()
     else:
-        return JsonResponse({
-            'code': 400,
-            'message': 'Search query invalid'
-        })
+        return Response(400, 'Search query invalid')
 
+@csrf_exempt
 def search_supplier(request):
     name = request.GET.get('query')
 
@@ -69,17 +63,10 @@ def search_supplier(request):
     qs = s.to_queryset()
 
     if name is not None:
-        return JsonResponse({
-            'code': 200,
-            'message': 'success',
-            'data': [obj.get_obj() for obj in qs]
-        })
+        return Response([obj.get_obj() for obj in qs]).get_obj()
     else:
-        return JsonResponse({
-            'code': 400,
-            'message': 'Search query invalid'
-        })
-
+        return Response(400, 'Search query invalid')
+@csrf_exempt
 def search_category(request):
     name = request.GET.get('query')
 
