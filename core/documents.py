@@ -1,32 +1,43 @@
-from django_elasticsearch_dsl import Document
+from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
 from .models import Product, Supplier, Category
 
 @registry.register_document
 class ProductDocument(Document):
+    category = fields.ObjectField(properties={
+        'name': fields.TextField(),
+        'desc': fields.TextField()
+    })
+
+    supplier = fields.ObjectField(properties={
+        'name': fields.TextField()
+    })
+
     class Index:
         name = 'products'
         settings = {'number_of_shards': 1,
                     'number_of_replicas': 0}
-
+    
     class Django:
         model = Product
 
         fields = [
             'name',
-            'desc',
+            'desc'
         ]
 
-        # Ignore auto updating of Elasticsearch when a model is saved
-        # or deleted:
-        # ignore_signals = True
+        related_models = [Category, Supplier]
 
-        # Don't perform an index refresh after every update (overrides global setting):
-        # auto_refresh = False
+        def get_queryset(self):
+            return super(ProductDocument, self).get_queryset().select_related(
+            'category', 'supplier')
 
-        # Paginate the django queryset used to populate the index with the specified size
-        # (by default it uses the database driver's default setting)
-        # queryset_pagination = 5000
+        def get_instances_from_related(self, related_instance):
+            if isinstance(related_instance, Category):
+                return related_instance.category_set.all()
+
+            if isinstance(related_instance, Supplier):
+                return related_instance.supplier_set.all()
 
 @registry.register_document
 class SupplierDocument(Document):

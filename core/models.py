@@ -7,11 +7,6 @@ from django.http import JsonResponse
 class Supplier(models.Model):
     name = models.CharField(max_length=30)
 
-    class Meta(object):
-        """Meta options."""
-
-        ordering = ["id"]
-
     def __str__(self):
         return '%s' % (self.name)
 
@@ -19,24 +14,14 @@ class Category(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=100, blank=True)
 
-    class Meta(object):
-        """Meta options."""
-
-        ordering = ["id"]
-
     def __str__(self):
         return '%s' % (self.name)
 
 class Product(models.Model):
     name = models.CharField(max_length=30)
     desc = models.CharField(max_length=100, blank=True)
-    cat = models.ForeignKey(Category, on_delete=models.CASCADE, unique=False, null=True)
-    supplied_by = models.ForeignKey(Supplier, on_delete=models.CASCADE, unique=False, null=True)
-
-    class Meta(object):
-        """Meta options."""
-
-        ordering = ["id"]
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, unique=False, null=True)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, unique=False, null=True)
 
     def __str__(self):
         return '%s | %s' % (self.name, self.cat.name)
@@ -45,6 +30,9 @@ class Product(models.Model):
         return {
             'name': self.name,
             'desc': self.desc,
+            'category_desc': self.category.desc,
+            'category': self.category.name,
+            'supplier': self.supplier.name
         }
 
 class Response():

@@ -7,6 +7,7 @@ from .documents import ProductDocument, SupplierDocument, CategoryDocument
 from rest_framework.permissions import AllowAny
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view, permission_classes
+from elasticsearch_dsl.query import MultiMatch
 
 class SupplierViewSet(viewsets.ModelViewSet):
     """
@@ -45,24 +46,36 @@ def get_product(request):
 
 @csrf_exempt
 def search_product(request):
-    name = request.GET.get('query')
+    query = request.GET.get('query')
 
-    s = ProductDocument.search().query("match", name=name)
+    # s = ProductDocument.search().query("match", name=query)
+    # qs = s.to_queryset()
+
+    p = MultiMatch(query=query, fields=['query', 'desc'], fuzziness='AUTO')
+    s = ProductDocument.search().query(p)
     qs = s.to_queryset()
+    # response = s.execute()
 
-    if name is not None:
+    if query is not None:
         return Response([obj.get_obj() for obj in qs]).get_obj()
     else:
         return Response(400, 'Search query invalid')
 
 @csrf_exempt
 def search_supplier(request):
-    name = request.GET.get('query')
+    query = request.GET.get('query')
 
-    s = ProductDocument.search().query("match", name=name)
+    s = ProductDocument.search().query("match", name=query)
     qs = s.to_queryset()
 
-    if name is not None:
+    # from elasticsearch_dsl.query import Q
+    # p = Q("multi_match", query=query, fields=['name','category__name', 'supplier__name'],
+    #                 type='phrase_prefix')
+    # s = ProductDocument.search().query(p)
+    # qs = s.to_queryset()
+    # result = s.execute()
+
+    if query is not None:
         return Response([obj.get_obj() for obj in qs]).get_obj()
     else:
         return Response(400, 'Search query invalid')
