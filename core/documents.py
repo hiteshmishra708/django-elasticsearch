@@ -26,18 +26,18 @@ class ProductDocument(Document):
             'desc'
         ]
 
-        related_models = [Category, Supplier]
+        # related_models = [Category, Supplier]
 
-        def get_queryset(self):
-            return super(ProductDocument, self).get_queryset().select_related(
-            'category', 'supplier')
+        # def get_queryset(self):
+        #     return super(ProductDocument, self).get_queryset().select_related(
+        #     'category', 'supplier')
 
-        def get_instances_from_related(self, related_instance):
-            if isinstance(related_instance, Category):
-                return related_instance.category_set.all()
+        # def get_instances_from_related(self, related_instance):
+        #     if isinstance(related_instance, Category):
+        #         return related_instance.category_set.all()
 
-            if isinstance(related_instance, Supplier):
-                return related_instance.supplier_set.all()
+        #     if isinstance(related_instance, Supplier):
+        #         return related_instance.supplier_set.all()
 
 @registry.register_document
 class SupplierDocument(Document):

@@ -48,7 +48,7 @@ def search_product(request):
     # s = ProductDocument.search().query("match", name=query)
     # qs = s.to_queryset()
 
-    p = MultiMatch(query=query, fields=['query', 'desc'], fuzziness='AUTO')
+    p = MultiMatch(query=query, fields=['query', 'name'], fuzziness='AUTO')
     s = ProductDocument.search().query(p)
     qs = s.to_queryset()
     # response = s.execute()

@@ -24,7 +24,7 @@ class Product(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, unique=False, null=True)
 
     def __str__(self):
-        return '%s | %s' % (self.name, self.cat.name)
+        return '%s' % (self.name)
 
     def get_obj(self):
         return {
