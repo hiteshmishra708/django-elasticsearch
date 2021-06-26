@@ -1,6 +1,6 @@
 from django_elasticsearch_dsl import Document, fields
 from django_elasticsearch_dsl.registries import registry
-from .models import Product, Supplier, Category
+from core.models import Product, Supplier, Category
 
 @registry.register_document
 class ProductDocument(Document):

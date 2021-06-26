@@ -1,12 +1,9 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
-from .serializers import SupplierSerializer, CategorySerializer, ProductSerializer 
-from .models import Supplier, Category, Product, Response
+from core.serializers import SupplierSerializer, CategorySerializer, ProductSerializer
+from core.models import Supplier, Category, Product, Response
 from django.http import JsonResponse
-from .documents import ProductDocument, SupplierDocument, CategoryDocument
-from rest_framework.permissions import AllowAny
+from core.documents import ProductDocument
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view, permission_classes
 from elasticsearch_dsl.query import MultiMatch
 
 class SupplierViewSet(viewsets.ModelViewSet):
@@ -30,7 +27,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     API endpoint that allows product to be viewed or edited.
     """
     queryset = Product.objects.all()
-    serializer_class = Product
+    serializer_class = ProductSerializer
 
 @csrf_exempt
 def get_product(request):
